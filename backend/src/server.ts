@@ -15,16 +15,11 @@ app.use(express.json());
 app.post('/api/decks', async (req: Request, res: Response) => {
   try {
     const { decks } = req.body;
-    
-    if (!decks || !decks.title) {
-      return res.status(400).json({ message: "Title is required" });
-    }
-
-    const newDecks = new Decks(decks);
-    const createdDecks = await newDecks.save();
-    res.json(createdDecks);
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error', error });
+    const newDeck = new Decks(decks);
+    const createdDeck = await newDeck.save()
+    res.json(createdDeck)
+  } catch (err) {
+    res.status(500).json({ message: 'Server Error', err });
   }
 });
 
