@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 import connectDB from './config/db';
 import Decks from './models/Decks';
 
-
 const app = express();
 connectDB();
 dotenv.config();
@@ -14,8 +13,8 @@ app.use(express.json());
 
 app.post('/api/decks', async (req: Request, res: Response) => {
   try {
-    const { decks } = req.body;
-    const newDeck = new Decks(decks);
+    const title  = req.body.title
+    const newDeck = new Decks({title});
     const createdDeck = await newDeck.save()
     res.json(createdDeck)
   } catch (err) {
