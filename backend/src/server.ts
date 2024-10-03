@@ -8,7 +8,9 @@ const app = express();
 connectDB();
 dotenv.config();
 
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
 
 app.post('/api/decks', async (req: Request, res: Response) => {
