@@ -5,12 +5,12 @@ function App() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    await fetch('https://localhost:4502/api/decks', {
+    await fetch('http://localhost:4502/api/decks', {
       method: 'POST',
-      body: JSON.stringify({ title }),
       headers: {
         "Content-Type": "application/json"
-      }
+      },
+      body: JSON.stringify({ title })
     });
     setTitle("");
   }
@@ -21,6 +21,7 @@ function App() {
         <label className="text-2xl font-semibold text-black mb-4">Decks Title</label>
         <input
           type="text"
+          name="title"
           value={title}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
           className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 mb-4 w-80"
