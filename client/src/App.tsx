@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface Deck {
+  _id: string;
+  title: string;
+}
 
 function App() {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState<string>("");  
+  const [decks, setDecks] = useState<Deck[]>([]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -15,8 +21,23 @@ function App() {
     setTitle("");
   }
 
+  useEffect(() => {
+    async () => {
+    const response =   await fetch("http://localhost:4502/api/decks")
+    const allDecks = await response.json();
+    setDecks(allDecks)
+    }
+  })
+
   return (
-    <div className='min-h-screen bg-gradient-to-b from-sky-400 to-white flex items-center justify-center'>
+    <div className='min-h-screen bg-gradient-to-tr from-sky-400 to-white flex flex-row justify-center'>
+      <ul>
+        {
+          decks.map((deck) => (
+            <li key={deck._id}>{deck.title}</li>
+          ))
+        }
+      </ul>
       <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center p-6 bg-white shadow-lg rounded-lg">
         <label className="text-2xl font-semibold text-black mb-4">Decks Title</label>
         <input
