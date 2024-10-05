@@ -112,16 +112,17 @@ function App() {
     fetchDecks();
   }
 
-  // Fetch decks when the component loads
+  const handleDelete = async (decksId: string) => {
+    await fetch(`http://localhost:4502/api/decks/${decksId}`,{
+      method: 'DELETE'
+    })
+    setDecks(decks.filter((deck) => deck._id !== decksId))
+  }
+
   useEffect(() => {
     fetchDecks();
   }, []);
-
-  const handleDelete = async () => {
-    await fetch('http://localhost:4502/api/decks/:decksId',{
-      method: 'DELETE'
-    })
-  }
+  
   return (
     <div className='min-h-screen bg-gradient-to-tr from-sky-400 to-white flex flex-col items-center justify-center'>
       <form onSubmit={handleSubmit} className="flex flex-col my-4 items-center justify-center py-6 px-20 bg-white shadow-lg rounded-lg">
@@ -148,7 +149,7 @@ function App() {
           decks.map((deck) => (
             <li className="bg-white p-4 m-2 shadow-md rounded-lg flex justify-between" key={deck._id}>
               {deck.title}
-              <div className="text-red-600 font-semibold px-2" onClick={handleDelete}>X</div>
+              <div className="text-red-600 font-semibold px-2 cursor-pointer" onClick={() => handleDelete(deck._id)}>X</div>
             </li>
           ))
         }
