@@ -28,8 +28,8 @@ app.post('/api/decks', async (req: Request, res: Response) => {
 
 app.get('/api/decks', async (req: Request, res: Response) => {
   try {
-    const getDecks = await Decks.find();
-    res.json({message: "Decks are found" ,getDecks})
+    const thiDecks= await Decks.find();
+    res.json({message: "Decks are found", thiDecks })
   } catch (err) {
     res.status(500).json({ message: 'Server Error', err });
   }
@@ -38,8 +38,8 @@ app.get('/api/decks', async (req: Request, res: Response) => {
 app.get('/api/decks/:id', async (req: Request, res: Response) => {
   try {
     const id  = req.params.id
-    const getDeck = await Decks.findById(id)
-    res.json({message:"Deck is found ", getDeck})
+     await Decks.findById(id)
+    res.json({message:"Deck is found "})
   } catch (err) {
     res.status(500).json({ message: 'Server Error', err });
   }
@@ -49,12 +49,12 @@ app.put('/api/decks/:id', async (req: Request, res: Response) => {
   try {
     const id = req.params.id
     const newTitle  = req.body.title
-    const updatedDeck = await Decks.findByIdAndUpdate(
+     await Decks.findByIdAndUpdate(
       id, 
       {$set: { title: newTitle }}, 
       { new: true }
     )
-    res.json({message: "Successfully updated" ,updatedDeck})
+    res.json({message: "Successfully updated"})
   } catch (err) {
     res.status(500).json({ message: 'Server Error', err });
   }
@@ -63,7 +63,7 @@ app.put('/api/decks/:id', async (req: Request, res: Response) => {
 app.delete('/api/decks/:id', async (req: Request, res: Response) => {
   try {
     const id  = req.params.id
-    const deletedDeck = await Decks.findByIdAndDelete(id);
+     await Decks.findByIdAndDelete(id);
     res.json({ message: "Successfully deleted"})
   } catch (err) {
     res.status(500).json({ message: 'Server Error', err });
