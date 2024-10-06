@@ -1,5 +1,7 @@
+import { API_URL } from "./config";
+
 export async function deleteDecks(deckId:string) {
-    const response = await fetch(`http://localhost:4502/api/decks/${deckId}`, {
+    const response = await fetch(`${API_URL}/api/decks/${deckId}`, {
         method: 'DELETE',
       });
       return response.json()

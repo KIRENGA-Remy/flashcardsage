@@ -1,5 +1,7 @@
+import { API_URL } from "./config";
+
 export async function createDecks(title:string) {
-   const response = await fetch('http://localhost:4502/api/decks', {
+   const response = await fetch(`${API_URL}/api/decks`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
