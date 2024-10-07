@@ -2,6 +2,7 @@ import { API_URL } from "./config";
 
 export type TDeck = {
   _id: string;
+  cards: string[],
   title: string;
 }
 
