@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv'
 import connectDB from './config/db';
 import Decks from './models/Decks';
+import cardsForDecksController from './controllers/cardsForDecksController';
 
 const app = express();
 connectDB();
@@ -69,6 +70,34 @@ app.delete('/api/decks/:id', async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server Error', err });
   }
 });
+
+app.post('/api/decks/:deckId/cards', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { deckId } = req.params;
+    const { text } = req.body;
+
+    // Find the deck by ID
+    const findDeck = await Decks.findById(deckId);
+    if (!findDeck) {
+      res.status(404).json({ message: 'Deck not found' });
+      return; // Early return to stop further execution
+    }
+
+    // Add the new card (text) to the cards array
+    findDeck.cards.push(text);
+
+    // Save the updated deck (await required here)
+    await findDeck.save();
+
+    // Respond with the updated deck
+    res.status(200).json(findDeck);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
