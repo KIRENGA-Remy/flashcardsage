@@ -71,9 +71,10 @@ app.delete('/api/decks/:id', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/api/decks/:deckId/cards', async (req: Request, res: Response): Promise<void> => {
+app.post('/api/decks/:deckId', async (req: Request, res: Response): Promise<void> => {
   try {
     const { deckId } = req.params;
+    console.log('here deckId:', deckId);
     const { text } = req.body;
 
     // Find the deck by ID

@@ -9,6 +9,7 @@ import { TDeck } from "./api/getAllDecks";
 function Deck() {
 //   const [title, setTitle] = useState<string>("");  
   const [text, setText] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const { deckId } = useParams();
 
 //   const fetchDecks = async () => {
@@ -23,16 +24,23 @@ function Deck() {
 //     fetchDecks()
 //   };
 
-  async function handleSubmit(e: React.FormEvent) {
+async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!deckId) {
+      setError("Deck ID is missing."); // Handle error
+      return;
+    }
     try {
-      const deck = await createCards(deckId!, text);
-    //   setText([...decks, deck]);
-      setText("");
+      const deck = await createCards(deckId, text);
+      console.log("deck:", deck);
+      setText(""); // Clear the text only after successful submission
     } catch (error) {
       console.error('Failed to create text:', error);
+      setError('Failed to create card. Please try again.');
     }
+    
   }
+  
 //   useEffect(() => {
 //     fetchDecks();
 //   }, []);
@@ -49,7 +57,7 @@ function Deck() {
   return (
     <div className='min-h-screen bg-gradient-to-tr from-sky-400 to-white flex flex-col items-center justify-center'>
       <form onSubmit={handleSubmit} className="flex flex-col my-4 items-center justify-center py-6 px-20 bg-white shadow-lg rounded-lg">
-        <label className="text-2xl font-semibold text-black mb-4">Decks Title</label>
+        <label className="text-2xl font-semibold text-black mb-4">Card Text</label>
         <div className="flex flex-col">
           <input
             type="text"

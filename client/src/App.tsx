@@ -12,7 +12,6 @@ function App() {
     try {
       const data = await getAllDecks();
       setDecks(data);
-      console.log(data);
       
     } catch (error) {
       console.error('Failed to fetch decks:', error);
