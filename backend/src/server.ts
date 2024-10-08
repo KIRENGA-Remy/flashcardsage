@@ -36,11 +36,11 @@ app.get('/api/decks', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/api/decks/:id', async (req: Request, res: Response) => {
+app.get('/api/decks/:deckId', async (req: Request, res: Response) => {
   try {
-    const id  = req.params.id
-     await Decks.findById(id)
-    res.json({message:"Deck is found "})
+    const {deckId}  = req.params
+    const deckOne = await Decks.findById(deckId)
+    res.json({message:"Deck is found ", deckOne})
   } catch (err) {
     res.status(500).json({ message: 'Server Error', err });
   }
@@ -98,36 +98,20 @@ app.post('/api/decks/:deckId/cards', async (req: Request, res: Response): Promis
   }
 });
 
-// app.delete('/api/decks/:deckId/cards/:cardId', async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const { deckId } = req.params;
-//     const { cardId } = req.params;
+app.delete('/api/decks/:deckId/cards/:index', async (req: Request, res: Response): Promise<void> => {
+    const deckId = req.params.deckId;
+    const index = req.params.index;
 
-//     const findDeck = await Decks.findById(deckId)
-//     const hereCard = findDeck.cards;
-//     if (!findDeck) {
-      
-//     }
-//     // Find the deck by ID
-//     const deleteDeck = await Decks.cards.findById(cardId);
-//     if (!findDeck) {
-//       res.status(404).json({ message: 'Deck not found' });
-//       return; // Early return to stop further execution
-//     }
+    const findDeck = await Decks.findById(deckId);
+    if (!findDeck) {
+      res.status(404).send("No deck of this ID exists");
+      return;
+    }
+    findDeck.cards.splice(parseInt(index), 1)
+    await findDeck.save();
+    res.json(findDeck)
+});
 
-//     // Add the new card (text) to the cards array
-//     findDeck.cards.push(text);
-
-//     // Save the updated deck (await required here)
-//     await findDeck.save();
-
-//     // Respond with the updated deck
-//     res.status(200).json(findDeck);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -1,28 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { createCards } from "./api/createCards";
+import { createCard } from "./api/createCard";
 import { TDeck } from "./api/getAllDecks";
+import { getDeck } from "./api/getDeck";
+import { deleteCard } from "./api/deleteCard";
 // import { createDecks } from "./api/createDecks";
 // import { getAllDecks, TDeck } from "./api/getAllDecks";
 // import { deleteDecks } from "./api/deleteDecks";
 
 function Deck() {
-//   const [title, setTitle] = useState<string>("");  
+  const [deck, setDeck] = useState<TDeck | undefined>()
+  const [cards, setCards] = useState<string[]>([]);  
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const { deckId } = useParams();
-
-//   const fetchDecks = async () => {
-//     try {
-//       const data = await getAllDecks();
-//       setDecks(data);
-//       console.log(data);
-      
-//     } catch (error) {
-//       console.error('Failed to fetch decks:', error);
-//     }
-//     fetchDecks()
-//   };
+useEffect(() => {
+   async function fetchDeck() {
+      if(!deckId) return;
+      const newDeck = await getDeck(deckId);
+      setDeck(newDeck);
+      setCards(newDeck.cards);
+   }
+    fetchDeck()
+  }, [deckId])
 
 async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,8 +31,8 @@ async function handleSubmit(e: React.FormEvent) {
       return;
     }
     try {
-      const deck = await createCards(deckId, text);
-      console.log("deck:", deck);
+      const { cards: serverCards} = await createCard(deckId, text);
+      setCards(serverCards)
       setText(""); // Clear the text only after successful submission
     } catch (error) {
       console.error('Failed to create text:', error);
@@ -40,19 +40,16 @@ async function handleSubmit(e: React.FormEvent) {
     }
     
   }
-  
-//   useEffect(() => {
-//     fetchDecks();
-//   }, []);
 
-//   const handleDelete = async (deckId: string) => {
-//     try {
-//       await deleteDecks(deckId)
-//       setDecks(decks.filter((deck) => deck._id !== deckId));
-//     } catch (error) {
-//       console.error('Failed to delete deck:', error);
-//     }
-//   };
+  const handleDeleteCard = async (index: number) => {
+    try {
+    if(!deckId) return;
+     const cardToDelete = await deleteCard(deckId, index)
+      setCards(cardToDelete.cards);
+    } catch (error) {
+      console.error('Failed to delete deck:', error);
+    }
+  };
   
   return (
     <div className='min-h-screen bg-gradient-to-tr from-sky-400 to-white flex flex-col items-center justify-center'>
@@ -75,16 +72,16 @@ async function handleSubmit(e: React.FormEvent) {
           </button>
         </div>
       </form>
-      {/* <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col gap-2">
         {
-          decks.map((deck) => (
-            <li className="bg-white p-4 m-2 w-[360px] shadow-md rounded-lg flex justify-between" key={deck._id}>
-              <Link to={`decks/${deck._id}`}>{deck.title}</Link>
-              <div className="text-red-600 font-semibold px-2 cursor-pointer" onClick={() => handleDelete(deck._id)}>X</div>
+          cards.map((card, index) => (
+            <li className="bg-white p-4 m-2 w-[360px] shadow-md rounded-lg flex justify-between" key={index}>
+              {card}
+              <div className="text-red-600 font-semibold px-2 cursor-pointer" onClick={() => handleDeleteCard(index)}>X</div>
             </li>
           ))
         }
-      </ul> */}
+      </ul>
     </div>
   );
 }
