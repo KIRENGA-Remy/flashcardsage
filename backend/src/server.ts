@@ -71,7 +71,7 @@ app.delete('/api/decks/:id', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/api/decks/:deckId', async (req: Request, res: Response): Promise<void> => {
+app.post('/api/decks/:deckId/cards', async (req: Request, res: Response): Promise<void> => {
   try {
     const { deckId } = req.params;
     console.log('here deckId:', deckId);
@@ -98,7 +98,36 @@ app.post('/api/decks/:deckId', async (req: Request, res: Response): Promise<void
   }
 });
 
+// app.delete('/api/decks/:deckId/cards/:cardId', async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     const { deckId } = req.params;
+//     const { cardId } = req.params;
 
+//     const findDeck = await Decks.findById(deckId)
+//     const hereCard = findDeck.cards;
+//     if (!findDeck) {
+      
+//     }
+//     // Find the deck by ID
+//     const deleteDeck = await Decks.cards.findById(cardId);
+//     if (!findDeck) {
+//       res.status(404).json({ message: 'Deck not found' });
+//       return; // Early return to stop further execution
+//     }
+
+//     // Add the new card (text) to the cards array
+//     findDeck.cards.push(text);
+
+//     // Save the updated deck (await required here)
+//     await findDeck.save();
+
+//     // Respond with the updated deck
+//     res.status(200).json(findDeck);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

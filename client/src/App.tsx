@@ -67,7 +67,7 @@ function App() {
         {
           decks.map((deck) => (
             <li className="bg-white p-4 m-2 w-[360px] shadow-md rounded-lg flex justify-between" key={deck._id}>
-              <Link to={`decks/${deck._id}`}>{deck.title}</Link>
+              <Link to={`decks/${deck._id}/cards`}>{deck.title}</Link>
               <div className="text-red-600 font-semibold px-2 cursor-pointer" onClick={() => handleDelete(deck._id)}>X</div>
             </li>
           ))
