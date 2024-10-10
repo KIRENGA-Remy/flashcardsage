@@ -64,6 +64,7 @@ function App() {
         </div>
       </form>
       <ul className="flex flex-col gap-2">
+        <h2 className="my-4 text-2xl font-semibold flex justify-center">Your Decks</h2>
         {
           decks.map((deck) => (
             <li className="bg-white p-4 m-2 w-[360px] shadow-md rounded-lg flex justify-between" key={deck._id}>
