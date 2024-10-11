@@ -66,9 +66,6 @@ function Deck() {
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-sky-400 to-white flex flex-col items-center justify-center">
-      {/* Form for adding a new card */}
-
-      {/* Display error if any */}
       {error && <p className="text-red-500">{error}</p>}
 
       {/* Display all cards */}
